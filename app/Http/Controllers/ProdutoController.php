@@ -50,7 +50,7 @@ class ProdutoController extends Controller
 
     public function show($id)
     {
-        $produto = $this->produtos->find($id);
+        $produto = $this->produtos->find(($id));
         $produto->load('categoria');
         return response()->json($produto);
     }

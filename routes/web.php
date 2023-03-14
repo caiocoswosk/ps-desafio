@@ -7,7 +7,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\SiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,13 +22,25 @@ use App\Http\Controllers\ProdutoController;
 |
 */
 
+// Rota troca de tema
+Route::get('toggle-theme', [SessionController::class, 'toggle'])->name('toggleTheme');
+
+// Rotas para o site
+Route::get('/', [SiteController::class, 'index'])->name('siteIndex');
+
+Route::get('/search/{query?}', [SiteController::class, 'search'])->name('siteSearch');
+
+Route::get('/product/{id?}', [SiteController::class, 'produto'])->name('siteProduto');
+
+Route::post('/buy', [SiteController::class, 'buy'])->name('siteBuy');
+
 Route::middleware('locale')->group(function () {
 
     Route::put('/locale', [LocaleController::class, 'setLocale'])->name('locale');
 
-    Route::get('/', function () {
-        return redirect()->route('dashboard');
-    });
+    // Route::get('/', function () {
+    //     return redirect()->route('dashboard');
+    // });
 
     Auth::routes();
 
