@@ -30,3 +30,9 @@
   background-color: #cd0000;
   border-left: 5px solid #4f0000;
 }
+
+@media (max-width: 820px) {
+  #message-content {
+    margin: 10px;
+  }
+}
