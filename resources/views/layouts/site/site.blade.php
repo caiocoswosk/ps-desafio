@@ -28,11 +28,13 @@
   @yield('css')
 </head>
 <body class="color3bg">
-  @include('layouts.site.header')
-
-  @include('layouts.site.alert')
-
-  @yield('content')
+  <div>
+    @include('layouts.site.header')
+  
+    @include('layouts.site.alert')
+  
+    @yield('content')
+  </div>
 
   @include('layouts.site.footer')
 
