@@ -31,7 +31,11 @@ class ProdutoController extends Controller
     public function create()
     {
         $categorias = $this->categorias->all();
-        return view('produto.crud', compact('categorias'));
+        if (!empty($categorias)){
+            return view('produto.crud', compact('categorias'));
+        } else {
+            return redirect()->route('produto.index')->with('danger', 'Registre uma categoria primeiro!');
+        }
     }
 
 
@@ -40,6 +44,7 @@ class ProdutoController extends Controller
         $data = $request->all();
 
         $data['imagem'] = '/storage/' . $request->file('imagem')->store('produtos', 'public');
+        // substitui a vírgula por ponto
         $data['preco'] = str_replace(',', '.', $data['preco']);
 
         $this->produtos->create($data);
@@ -51,7 +56,9 @@ class ProdutoController extends Controller
     public function show($id)
     {
         $produto = $this->produtos->find(($id));
-        $produto->load('categoria');
+        if (!empty($produto)){
+            $produto->load('categoria');
+        }
         return response()->json($produto);
     }
 
@@ -59,8 +66,12 @@ class ProdutoController extends Controller
     public function edit($id)
     {
         $produto = $this->produtos->find($id);
-        $categorias = $this->categorias->all();
-        return view('produto.crud', compact('produto', 'categorias'));
+        if (!empty($produto)) {
+            $categorias = $this->categorias->all();
+            return view('produto.crud', compact('produto', 'categorias'));
+        } else {
+            return redirect()->route('produto.index')->with('danger', 'Produto não encontrado!');
+        }
     }
 
 
@@ -68,22 +79,36 @@ class ProdutoController extends Controller
     {
         $data = $request->all();
         $produto = $this->produtos->find($id);
-        $data['preco'] = str_replace(',', '.', $data['preco']);
+        if (!empty($produto)) {
+            $data['preco'] = str_replace(',', '.', $data['preco']);
 
-        if($request->hasFile('imagem')){
-            Storage::disk('public')->delete(str_replace('/storage/', '', $produto->imagem));
-            $data['imagem'] = '/storage/' . $request->file('imagem')->store('produtos', 'public');
+            if ($request->hasFile('imagem')) {
+                // verifica se possui imagem para excluí-la
+                if (!empty($produto->imagem)) {
+                    Storage::disk('public')->delete(str_replace('/storage/', '', $produto->imagem));
+                }
+                $data['imagem'] = '/storage/' . $request->file('imagem')->store('produtos', 'public');
+            }
+
+            $produto->update($data);
+            return redirect()->route('produto.index')->with('success', 'Produto alterado com sucesso!');
+        } else {
+            return redirect()->route('produto.index')->with('danger', 'Produto não encontrado!');
         }
-
-        $produto->update($data);
-        return redirect()->route('produto.index')->with('success', 'Produto alterado com sucesso!');
     }
 
     public function destroy($id)
     {
         $produto = $this->produtos->find($id);
-        Storage::disk('public')->delete(str_replace('/storage/', '', $produto->imagem));
-        $produto->delete();
-        return redirect()->route('produto.index')->with('success', 'Produto apagado com sucesso!');
+        if (!empty($produto)) {
+            // verifica se possui imagem para excluí-la
+            if (!empty($produto->imagem)) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $produto->imagem));
+            }
+            $produto->delete();
+            return redirect()->route('produto.index')->with('success', 'Produto apagado com sucesso!');
+        } else {
+            return redirect()->route('produto.index')->with('danger', 'Produto não encontrado!');
+        }
     }
 }
