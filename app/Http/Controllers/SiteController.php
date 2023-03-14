@@ -24,6 +24,8 @@ class SiteController extends Controller
     public function search(SiteRequest $request)
     {
         $query = $request['query'];
+        // Busca o produto no banco de dados de acordo com a query de pesquisa
+        // e ordena pelos produtos que não estão esgotados
         $produtos = Produto::where('nome', 'LIKE', "%{$query}%")->orderBy(DB::raw('quantidade = 0'))->get();
         // Busca apenas pelas categorias que possue algum
         // produto que vai ser exibido
@@ -52,15 +54,18 @@ class SiteController extends Controller
         $id = $request['id'];
         $qtt = $request['quantity'];
 
+        // busca o produto pelo id
         $produto = Produto::find($id);
 
-        // Verifica se o produto existe
+        // verifica se o produto não existe
         if (!$produto) {
             return redirect()->back()->with('error', 'Produto não encontrado!');
         }
-        // Verifica se a quantidade esta adequada
+        // verifica se a quantidade da compra esta adequada
         else if (($produto->quantidade >= $qtt) and ($qtt >= 1)) {
+            // subtrai a quantidade do produto pela quantidade comprada
             $produto->quantidade -= $qtt;
+            // atualiza o registro do produto no banco de dados
             $produto->save();
             return redirect()->back()->with('success', 'Compra realizada com sucesso!');
         } else {

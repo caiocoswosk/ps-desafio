@@ -36,8 +36,11 @@ class CategoriaController extends Controller
 
     public function store(CategoriaRequest $request)
     {
+        // busca por todas as categorias
         $data = $request->all();
+        // verifica se a requisição enviou o nome da categoria
         if (!empty($data['categoria'])) {
+            // registra a categoria no banco de dados
             $this->categorias->create($data);
 
             return redirect()->route('categoria.index')->with('success', 'Categoria criada com sucesso!');
@@ -48,13 +51,16 @@ class CategoriaController extends Controller
 
     public function show($id)
     {
+        // busca a categoria pelo id
         $categoria = $this->categorias->find($id);
         return response()->json($categoria);
     }
 
     public function edit($id)
     {
+        // busca a categoria pelo id
         $categoria = $this->categorias->find($id);
+        // verifica se a categoria existe
         if (!empty($categoria)) {
             return view('categoria.crud', compact('categoria'));
         } else {
@@ -65,8 +71,11 @@ class CategoriaController extends Controller
     public function update(CategoriaRequest $request, $id)
     {
         $data = $request->all();
+        // busca a categoria pelo id
         $categoria = $this->categorias->find($id);
+        // verifica se a categoria existe
         if (!empty($categoria)) {
+            // atualiza o registro da categoria no banco de dados
             $categoria->update($data);
 
             return redirect()->route('categoria.index')->with('success', 'Categoria alterada com sucesso!');
@@ -77,12 +86,17 @@ class CategoriaController extends Controller
 
     public function destroy($id)
     {
+        // busca a categoria pelo id
         $categoria = $this->categorias->find($id);
+        // verifica se a categoria existe
         if (!empty($categoria)) {
+            // busca por todos os produtos dessa categoria que possuem uma imagem
             $produtos = $this->produtos->where('categoria_id', $id)->whereNotNull('imagem')->get();
+            // percorre por todos os produtos e exclui sua respectiva imagem
             foreach ($produtos as $produto) {
                 Storage::disk('public')->delete(str_replace('/storage/', '', $produto->imagem));
             }
+            // apaga o registro da categoria no banco de dados
             $categoria->delete();
 
             return redirect()->route('categoria.index')->with('success', 'Categoria deletada com sucesso!');

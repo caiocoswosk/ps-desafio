@@ -25,13 +25,13 @@ use App\Http\Controllers\SiteController;
 // Rota troca de tema
 Route::get('toggle-theme', [SessionController::class, 'toggle'])->name('toggleTheme');
 
-// Rotas para o site
+// Rota principal do site
 Route::get('/', [SiteController::class, 'index'])->name('siteIndex');
-
+// Rota de busca de produto
 Route::get('/search/{query?}', [SiteController::class, 'search'])->name('siteSearch');
-
+// Rota de visualição única de produto
 Route::get('/product/{id?}', [SiteController::class, 'produto'])->name('siteProduto');
-
+// Rota de compra de produto
 Route::post('/buy', [SiteController::class, 'buy'])->name('siteBuy');
 
 Route::middleware('locale')->group(function () {
