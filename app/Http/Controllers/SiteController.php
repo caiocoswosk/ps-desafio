@@ -7,6 +7,7 @@ use App\Models\Produto;
 use App\Models\Categoria;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Requests\SiteRequest;
 
 class SiteController extends Controller
 {
@@ -20,7 +21,7 @@ class SiteController extends Controller
         return view('site.index', compact('produtos', 'categorias'));
     }
 
-    public function search(Request $request)
+    public function search(SiteRequest $request)
     {
         $query = $request['query'];
         $produtos = Produto::where('nome', 'LIKE', "%{$query}%")->orderBy(DB::raw('quantidade = 0'))->get();
@@ -31,7 +32,7 @@ class SiteController extends Controller
         return view('site.search', compact('produtos', 'categorias', 'query'));
     }
 
-    public function produto(Request $request)
+    public function produto(SiteRequest $request)
     {
         $id = $request['id'];
         $produto = Produto::find($id);
@@ -46,7 +47,7 @@ class SiteController extends Controller
         }
     }
 
-    public function buy(Request $request)
+    public function buy(SiteRequest $request)
     {
         $id = $request['id'];
         $qtt = $request['quantity'];
