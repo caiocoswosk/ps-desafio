@@ -23,21 +23,21 @@
   <link rel="stylesheet" href="{{ asset("site/css/site.css") }}">
   <link rel="stylesheet" href="{{ asset("site/css/header.css") }}">
   <link rel="stylesheet" href="{{ asset("site/css/footer.css") }}">
-  <link rel="stylesheet" href="{{ asset("site/css/message.css") }}">
+  <link rel="stylesheet" href="{{ asset("site/css/alert.css") }}">
 
   @yield('css')
 </head>
 <body class="color3bg">
   @include('layouts.site.header')
 
-  @include('layouts.site.message')
+  @include('layouts.site.alert')
 
   @yield('content')
 
   @include('layouts.site.footer')
 
   <script src="{{ asset("site/js/toggle-theme.js") }}"></script>
-  <script src="{{ asset("site/js/message.js") }}"></script>
+  <script src="{{ asset("site/js/alert.js") }}"></script>
   @yield('js')
 </body>
 </html>

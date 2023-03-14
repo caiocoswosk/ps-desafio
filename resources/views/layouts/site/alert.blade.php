@@ -1,6 +1,6 @@
 @if (Session::has('success'))
-    <section id="message-content" class="message-success">
-        <div id="message">
+    <section id="alert-content" class="alert-success">
+        <div id="alert">
             <span>{{ Session::get('success') }}</span>
         </div>
         <div>
@@ -12,8 +12,8 @@
 @endif
 
 @if (Session::has('error'))
-    <section id="message-content" class="message-error">
-        <div id="message">
+    <section id="alert-content" class="alert-error">
+        <div id="alert">
             <span>{{ Session::get('error') }}</span>
         </div>
         <div>

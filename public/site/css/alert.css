@@ -1,4 +1,4 @@
-#message-content {
+#alert-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,7 +10,7 @@
   color: white;
 }
 
-#message-content button {
+#alert-content button {
   background: none;
   border: none;
   outline: none;
@@ -20,19 +20,19 @@
   color: white;
 }
 
-.message-success {
+.alert-success {
   background-color: #00cf79;
   border-left: 5px solid #00512f;
 }
 
 
-.message-error {
+.alert-error {
   background-color: #cd0000;
   border-left: 5px solid #4f0000;
 }
 
 @media (max-width: 820px) {
-  #message-content {
+  #alert-content {
     margin: 10px;
   }
 }
