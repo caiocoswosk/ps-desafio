@@ -31,7 +31,7 @@
         <input type="text" class="category-id" value="#" hidden>
         <button class="btn-category category-activate color4">Todos</button>
       </li>
-      
+
       @isset($categorias)
         @foreach ($categorias as $categoria)
         <li class="category">
@@ -56,7 +56,7 @@
 
     @isset($produtos)
       @foreach ($produtos as $produto)
-      <a href="#" class="product color1bg">
+      <a href="{{ route('siteProduto', $produto->id ) }}" class="product color1bg">
         <input type="text" class="category-id" value="{{ $produto["categoria_id"] }}" hidden>
         <div class="product-img">
           <img src="{{ $produto["imagem"] }}" alt="">
